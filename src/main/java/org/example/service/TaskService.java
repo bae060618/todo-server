@@ -7,9 +7,12 @@ import org.example.persist.entity.TaskEntity;
 import org.example.persist.TaskRepository;
 import org.example.constants.TaskStatus;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.sql.Date;
+
 
 
 @Slf4j
@@ -19,7 +22,7 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
-    public Task add(String title, String description, String dueDate) {
+    public Task add(String title, String description, LocalDate dueDate) {
         var e = TaskEntity.builder()
                 .title(title)
                 .description(description)
@@ -51,6 +54,41 @@ public class TaskService {
         var entity = this.getById(id);
         return this.entityToObject(entity);
     }
+
+    public Task update(Long id, String title, String description, LocalDate dueDate) {
+        var exists = this.getById(id);
+
+        exists.setTitle(title == null || title.isBlank() ?
+                exists.getTitle() : title);
+        exists.setDescription(description == null || description.isBlank() ?
+                exists.getDescription() : description);
+        exists.setDueDate(Objects.isNull(dueDate) ?
+                exists.getDueDate() : Date.valueOf(dueDate));
+
+        var updated = this.taskRepository.save(exists);
+        return this.entityToObject(updated);
+    }
+
+    public Task updateStatus(Long id, TaskStatus status) {
+        var entity = this.getById(id);
+
+        entity.setStatus(status);
+
+        var saved = this.taskRepository.save(entity);
+
+        return this.entityToObject(saved);
+    }
+
+    public boolean delete(Long id) {
+        try {
+            this.taskRepository.deleteById(id);
+        } catch (Exception e) {
+            log.error("an error occurred while deleting [{}]", e.toString());
+            return false;
+        }
+        return true;
+    }
+
 
     private TaskEntity getById(Long id) {
         return this.taskRepository.findById(id)

@@ -5,13 +5,15 @@ import lombok.Setter;
 import lombok.ToString;
 import org.example.constants.TaskStatus;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @ToString
 public class TaskRequest {
     private String title;
     private String description;
-    private String dueDate;
+    private LocalDate dueDate;
     private TaskStatus status;
 }
 
