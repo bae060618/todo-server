@@ -33,6 +33,8 @@ public class TaskEntity {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime updatedAt;
+
     @Enumerated(value = EnumType.STRING)
     private TaskStatus status;
 }
