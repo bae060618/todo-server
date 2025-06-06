@@ -1,10 +1,14 @@
 package org.example.persist.entity;
 
+import jakarta.persistence.Entity;
 import lombok.*;
 import org.example.constants.TaskStatus;
-
-import javax.persistence.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import jakarta.persistence.*;
+import java.sql.Date;
 import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
@@ -24,6 +28,10 @@ public class TaskEntity {
     private String title;
 
     private String description;
+
+    private Date dueDate;
+
+    private LocalDateTime createdAt;
 
     @Enumerated(value = EnumType.STRING)
     private TaskStatus status;
