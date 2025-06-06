@@ -8,6 +8,7 @@ import org.example.persist.TaskRepository;
 import org.example.constants.TaskStatus;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,6 +29,8 @@ public class TaskService {
                 .description(description)
                 .dueDate(Date.valueOf(dueDate))
                 .status(TaskStatus.TODO)
+                .createdAt(LocalDateTime.now())   //
+                .updatedAt(LocalDateTime.now())  //
                 .build();
 
         var saved = this.taskRepository.save(e);
@@ -104,6 +107,7 @@ public class TaskService {
                 .status(e.getStatus())
                 .dueDate(e.getDueDate().toString())
                 .createdAt(e.getCreatedAt())
+                .updatedAt(e.getUpdatedAt())
                 .build();
     }
 }
